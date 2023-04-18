@@ -1,0 +1,47 @@
+import time
+
+class Timer:
+    def __init__(self, seconds):
+        self.seconds = seconds
+        self.start_time = None
+        self.paused_time = None
+        self.paused = False
+    
+    def start(self):
+        self.start_time = time.time()
+        while True:
+            if self.paused:
+                time.sleep(0.1)
+                continue
+            current_time = time.time()
+            elapsed_time = current_time - self.start_time
+            remaining_time = self.seconds - elapsed_time
+            if remaining_time <= 0:
+                print("Time's up!")
+                break
+            print(f"Time remaining: {remaining_time:.2f} seconds")
+            time.sleep(0.1)
+    
+    def pause(self):
+        self.paused = True
+        self.paused_time = time.time()
+    
+    def resume(self):
+        self.paused = False
+        elapsed_pause_time = time.time() - self.paused_time
+        self.start_time += elapsed_pause_time
+        self.paused_time = None
+    
+    def reset(self):
+        self.start_time = None
+        self.paused_time = None
+        self.paused = False
+
+# Example usage
+timer = Timer(60) # 60 seconds
+timer.start() # start the timer
+
+# During the timer execution, you can pause/resume/reset the timer using the following methods:
+# timer.pause()
+# timer.resume()
+# timer.reset()
